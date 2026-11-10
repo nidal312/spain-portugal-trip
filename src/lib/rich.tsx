@@ -11,12 +11,12 @@ const TOKEN =
   /(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|==[^=]+==|\[[^\]]+\]\((?:[^()\s]|\([^()\s]*\))+\))/g;
 const LINK = /^\[([^\]]+)\]\((.+)\)$/;
 
-export function renderRich(text: Rich): ReactNode {
+function renderRich(text: Rich): ReactNode {
   const parts = text.split(TOKEN).filter(Boolean);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={i} className="font-semibold text-ink">
+        <strong key={i} className="font-semibold">
           {part.slice(2, -2)}
         </strong>
       );

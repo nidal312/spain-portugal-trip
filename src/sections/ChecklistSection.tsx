@@ -85,8 +85,12 @@ export function ChecklistSection() {
               const isDone = Boolean(booked[item.id]);
               const inputId = `book-${item.id}`;
               return (
-                <Reveal key={item.id} delay={i * 0.04}>
-                  <li
+                  <motion.li
+                    key={item.id}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "0px 0px -12% 0px" }}
+                    transition={{ duration: 0.7, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
                     className={cn(
                       "flex gap-4 rounded-2xl border p-4 transition-colors sm:p-5",
                       isDone ? "border-saffron/40 bg-saffron/10" : "border-paper/12 bg-paper/[0.04]",
@@ -133,8 +137,7 @@ export function ChecklistSection() {
                         <RichText>{item.body}</RichText>
                       </p>
                     </div>
-                  </li>
-                </Reveal>
+                  </motion.li>
               );
             })}
           </ul>

@@ -43,3 +43,21 @@ export const cityById = (id: CityId): City => {
   if (!city) throw new Error(`Unknown city ${id}`);
   return city;
 };
+
+export const cityTextClass: Record<CityId, string> = {
+  barcelona: "text-city-barcelona",
+  valencia: "text-city-valencia",
+  lisbon: "text-city-lisbon",
+};
+
+export const cityBgClass: Record<CityId, string> = {
+  barcelona: "bg-city-barcelona",
+  valencia: "bg-city-valencia",
+  lisbon: "bg-city-lisbon",
+};
+
+export const cityBorderClass: Record<CityId, string> = {
+  barcelona: "border-city-barcelona",
+  valencia: "border-city-valencia",
+  lisbon: "border-city-lisbon",
+};

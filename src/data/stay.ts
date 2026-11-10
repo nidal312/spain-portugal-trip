@@ -16,7 +16,7 @@ export const stays: Stay[] = [
     city: "barcelona",
     title: "Barcelona, 3 nights",
     base: "Dreta de l’Eixample",
-    body: "around Passeig de Gràcia or toward Sagrada / Verdaguer — central, metro-rich, quieter than the Ramblas. El Born if you want atmosphere (it can be noisy); Gràcia for a local feel near Park Güell. Avoid basing on La Rambla itself.",
+    body: ", around Passeig de Gràcia or toward Sagrada / Verdaguer — central, metro-rich, quieter than the Ramblas. El Born if you want atmosphere (it can be noisy); Gràcia for a local feel near Park Güell. Avoid basing on La Rambla itself.",
   },
   {
     city: "valencia",

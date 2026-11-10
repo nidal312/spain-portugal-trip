@@ -56,8 +56,8 @@ function FlightOption({ flight, checked, name, onSelect }: { flight: Flight; che
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.25 }}
       className={cn(
-        "stub relative block cursor-pointer rounded-2xl border bg-paper-2 p-4 pr-5 pl-5 transition-[border-color,box-shadow] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-azulejo",
-        checked ? "border-ink shadow-lift" : "border-line hover:border-ink-soft/50",
+        "stub relative block cursor-pointer rounded-2xl border bg-paper-2 p-4 pr-5 pl-5 transition-[border-color] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-azulejo",
+        checked ? "border-ink ring-1 ring-ink" : "border-line hover:border-ink-soft/50",
         flight.leg === "outbound" ? "text-terra" : flight.leg === "transfer" ? "text-city-valencia" : "text-azulejo",
       )}
       style={{ ["--notch-y" as string]: "62%" }}

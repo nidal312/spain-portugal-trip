@@ -45,7 +45,7 @@ export function Header() {
   }, [active]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/88 backdrop-blur-md supports-[backdrop-filter]:bg-paper/75">
+    <header className="sticky top-0 z-50 border-b border-line/80 bg-paper/95 backdrop-blur-md supports-[backdrop-filter]:bg-paper/90">
       <div className="mx-auto flex max-w-7xl flex-col px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
         <a
           href="#top"

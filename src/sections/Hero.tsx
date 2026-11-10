@@ -1,6 +1,6 @@
 import { ArrowDown, Plane, TrainFront } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Photo } from "@/components/ui/Photo";
 import { PhotoCredit } from "@/components/ui/PhotoCredit";
 import { cities } from "@/data/cities";
@@ -26,7 +26,7 @@ export function Hero() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "18%"]);
-  const countdown = countdownLabel(Date.now());
+  const [countdown] = useState(() => countdownLabel(Date.now()));
 
   return (
     <>
@@ -96,7 +96,7 @@ export function Hero() {
                   <li className="min-w-0 flex-1 rounded-xl bg-paper/8 px-3 py-2.5 sm:px-4">
                     <p className="font-display text-lg leading-tight sm:text-xl">{city.name}</p>
                     <p className="mt-0.5 text-[0.7rem] tracking-[0.12em] text-paper/70 uppercase">
-                      {trip.pills[i]}
+                      {city.nights} {city.nights === 1 ? "night" : "nights"}
                     </p>
                   </li>
                   {i < cities.length - 1 && (

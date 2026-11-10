@@ -11,16 +11,27 @@ interface PhotoProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "
   imgClassName?: string;
 }
 
+const SOURCE_ORDER = ["avif", "webp", "jpg", "jpeg"] as const;
+
 export function Photo({ id, sizes, priority = false, className, imgClassName, ...rest }: PhotoProps) {
   const photo = photos[id];
   const { sources, img } = photo.picture;
+  const formats = [
+    ...SOURCE_ORDER.filter((format) => format in sources),
+    ...Object.keys(sources).filter((format) => !SOURCE_ORDER.includes(format as (typeof SOURCE_ORDER)[number])),
+  ];
+  const fallbackSrcSet = sources.jpg ?? sources.jpeg;
   return (
     <picture className={cn("block", className)}>
-      {Object.entries(sources).map(([format, srcSet]) => (
-        <source key={format} type={MIME[format]} srcSet={srcSet} sizes={sizes} />
-      ))}
+      {formats.map((format) => {
+        const srcSet = sources[format];
+        if (!srcSet) return null;
+        return <source key={format} type={MIME[format] ?? `image/${format}`} srcSet={srcSet} sizes={sizes} />;
+      })}
       <img
         src={img.src}
+        srcSet={fallbackSrcSet}
+        sizes={sizes}
         alt={photo.alt}
         width={photo.width}
         height={photo.height}
