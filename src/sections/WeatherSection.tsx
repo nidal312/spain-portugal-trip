@@ -67,7 +67,7 @@ export function WeatherSection() {
   return (
     <section id="weather" aria-labelledby="weather-title" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading index="10" kicker={weatherIntro.kicker} title={weatherIntro.title} id="weather-title">
+        <SectionHeading index="11" kicker={weatherIntro.kicker} title={weatherIntro.title} id="weather-title">
           <p>{weatherIntro.intro}</p>
         </SectionHeading>
         <div className="mt-12 grid gap-6 md:grid-cols-3">

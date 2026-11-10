@@ -7,6 +7,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
 import {
   airportNames,
+  airportOrder,
+  airports,
   defaultSelection,
   flightSearchLinks,
   flights,
@@ -211,6 +213,19 @@ export function FlightsSection() {
               {l.label}
             </ExternalLink>
           ))}
+        </div>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {airportOrder.map((code) => {
+            const airport = airports[code];
+            return (
+              <article key={code} className="rounded-2xl border border-line bg-paper-2 p-4">
+                <p className="kicker text-ink-soft">{airport.code}</p>
+                <h3 className="mt-1 font-display text-lg font-medium">{airport.name}</h3>
+                <p className="mt-2 text-sm leading-snug text-ink-soft">{airport.description}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

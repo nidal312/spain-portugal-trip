@@ -1,8 +1,11 @@
+import { places } from "./places";
+
 export type CityId = "barcelona" | "valencia" | "lisbon";
 
 export interface City {
   id: CityId;
   name: string;
+  description: string;
   country: "Spain" | "Portugal";
   /** Label used on the map, e.g. "22–25 NOV". */
   dates: string;
@@ -15,6 +18,7 @@ export const cities: City[] = [
   {
     id: "barcelona",
     name: "Barcelona",
+    description: places.barcelona.description,
     country: "Spain",
     dates: "22–25 Nov",
     nights: 3,
@@ -23,6 +27,7 @@ export const cities: City[] = [
   {
     id: "valencia",
     name: "Valencia",
+    description: places.valencia.description,
     country: "Spain",
     dates: "25–26 Nov",
     nights: 1,
@@ -31,6 +36,7 @@ export const cities: City[] = [
   {
     id: "lisbon",
     name: "Lisbon",
+    description: places.lisbon.description,
     country: "Portugal",
     dates: "26–29 Nov",
     nights: 3,

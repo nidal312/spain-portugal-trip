@@ -76,19 +76,15 @@ export function FoodSection() {
                   <ul className="mt-5 space-y-4">
                     {group.places.map((place, i) => (
                       <motion.li
-                        key={`${group.city}-${place.name ?? "note"}-${i}`}
+                        key={`${group.city}-${place.name}-${i}`}
                         layout="position"
                         className="text-[0.98rem] leading-relaxed text-ink-soft"
                       >
-                        {place.name ? (
-                          <>
-                            <strong className="font-display text-lg font-medium text-ink">{place.name}</strong>
-                            {place.text.startsWith("(") ? " " : " — "}
-                            <RichText>{place.text}</RichText>
-                          </>
-                        ) : (
+                        <strong className="font-display text-lg font-medium text-ink">{place.name}</strong>
+                        <p className="mt-1">{place.description}</p>
+                        <p className="mt-1 text-sm">
                           <RichText>{place.text}</RichText>
-                        )}
+                        </p>
                       </motion.li>
                     ))}
                   </ul>

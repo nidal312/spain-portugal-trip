@@ -3,6 +3,7 @@ import { LightboxProvider } from "@/components/Lightbox";
 import { ChecklistSection } from "@/sections/ChecklistSection";
 import { DaysSection } from "@/sections/DaysSection";
 import { FlightsSection } from "@/sections/FlightsSection";
+import { CafesSection } from "@/sections/CafesSection";
 import { FoodSection } from "@/sections/FoodSection";
 import { Footer } from "@/sections/Footer";
 import { Header } from "@/sections/Header";
@@ -36,6 +37,7 @@ export function App() {
             <DaysSection />
             <SpotsSection />
             <FoodSection />
+            <CafesSection />
             <MosquesSection />
             <StaySection />
             <WeatherSection />

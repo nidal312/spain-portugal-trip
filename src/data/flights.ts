@@ -1,7 +1,14 @@
 import type { Rich } from "@/lib/rich";
+import { places } from "./places";
 
 export type LegId = "outbound" | "transfer" | "return";
 export type Airport = "AMS" | "BCN" | "VLC" | "LIS" | "EIN";
+
+export interface AirportInfo {
+  code: Airport;
+  name: string;
+  description: string;
+}
 
 export interface Flight {
   id: string;
@@ -209,6 +216,14 @@ export const flightSearchLinks = [
   },
 ];
 
+export const airports: Record<Airport, AirportInfo> = {
+  AMS: { code: "AMS", name: places.ams.name, description: places.ams.description },
+  BCN: { code: "BCN", name: places.bcn.name, description: places.bcn.description },
+  VLC: { code: "VLC", name: places.vlc.name, description: places.vlc.description },
+  LIS: { code: "LIS", name: places.lis.name, description: places.lis.description },
+  EIN: { code: "EIN", name: places.ein.name, description: places.ein.description },
+};
+
 export const airportNames: Record<Airport, string> = {
   AMS: "Amsterdam",
   BCN: "Barcelona",
@@ -216,3 +231,5 @@ export const airportNames: Record<Airport, string> = {
   LIS: "Lisbon",
   EIN: "Eindhoven",
 };
+
+export const airportOrder: Airport[] = ["AMS", "BCN", "VLC", "LIS", "EIN"];

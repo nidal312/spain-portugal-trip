@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, type KeyboardEvent } from "react";
 import { PhotoCredit } from "@/components/ui/PhotoCredit";
+import { PlaceBlurbList } from "@/components/ui/PlaceBlurb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ZoomablePhoto } from "@/components/ui/ZoomablePhoto";
 import { cityBgClass, cityTextClass, type CityId } from "@/data/cities";
@@ -50,6 +51,27 @@ function DayBlocks({ blocks }: { blocks: DayBlock[] }) {
                 <RichText>{block.text}</RichText>
               </aside>
             );
+          case "notice":
+            return (
+              <aside
+                key={i}
+                className="rounded-xl border-l-[3px] border-saffron bg-saffron/10 px-4 py-3 text-sm leading-relaxed text-ink-soft"
+              >
+                <p className="kicker mb-1 text-saffron-deep">Heads-up</p>
+                <RichText>{block.text}</RichText>
+              </aside>
+            );
+          case "alt":
+            return (
+              <aside
+                key={i}
+                className="rounded-xl border border-dashed border-line bg-sand/50 px-4 py-4 text-[0.98rem] leading-relaxed text-ink-soft"
+              >
+                <p className="kicker mb-2 text-olive">{block.title}</p>
+                <RichText>{block.text}</RichText>
+                {block.places && <PlaceBlurbList ids={block.places} />}
+              </aside>
+            );
           case "time": {
             const timeIndex = timeBlocks.indexOf(block);
             const isLast = timeIndex === timeBlocks.length - 1;
@@ -59,12 +81,13 @@ function DayBlocks({ blocks }: { blocks: DayBlock[] }) {
                   <span aria-hidden="true" className="mt-1.5 size-2.5 rounded-full bg-olive" />
                   {!isLast && <span aria-hidden="true" className="w-px flex-1 bg-line" />}
                 </div>
-                <p className={cn("min-w-0", !isLast && "pb-4")}>
+                <div className={cn("min-w-0", !isLast && "pb-4")}>
                   <strong className="kicker block text-olive">{block.label}</strong>
-                  <span className="mt-1 block text-[0.98rem] leading-relaxed text-ink-soft">
+                  <p className="mt-1 text-[0.98rem] leading-relaxed text-ink-soft">
                     <RichText>{block.text}</RichText>
-                  </span>
-                </p>
+                  </p>
+                  {block.places && <PlaceBlurbList ids={block.places} />}
+                </div>
               </div>
             );
           }

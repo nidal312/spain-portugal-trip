@@ -26,12 +26,14 @@ const badgeClass: Record<Availability, string> = {
   "last-few": "bg-avail-last text-paper",
   limited: "bg-avail-limited text-paper",
   good: "bg-avail-good text-paper",
+  calendar: "bg-ink text-paper",
 };
 
 const chipClass: Record<Availability, string> = {
   "last-few": "border-avail-last/30 bg-avail-last/12 text-avail-last",
   limited: "border-avail-limited/30 bg-avail-limited/12 text-avail-limited",
   good: "border-avail-good/30 bg-avail-good/12 text-avail-good",
+  calendar: "border-ink/20 bg-sand text-ink",
 };
 
 function AvailabilityBadge({ value }: { value: Availability }) {
@@ -53,41 +55,59 @@ function SlotCard({ venue, codes, onCode }: { venue: VenueSlots; codes: Record<s
       className="overflow-hidden rounded-[1.75rem] border border-line bg-paper-2 shadow-card"
     >
       <div className="flex items-start gap-4 p-5 sm:p-6">
-        <Photo
-          id={venue.photo}
-          sizes="96px"
-          className="size-16 shrink-0 overflow-hidden rounded-xl sm:size-20"
-          imgClassName="size-full object-cover"
-        />
+        {venue.photo ? (
+          <Photo
+            id={venue.photo}
+            sizes="96px"
+            className="size-16 shrink-0 overflow-hidden rounded-xl sm:size-20"
+            imgClassName="size-full object-cover"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="grid size-16 shrink-0 place-items-center rounded-xl bg-sand sm:size-20"
+          >
+            <span className="font-display text-2xl leading-none text-terra/45 italic">
+              {venue.venue
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((w) => w[0])
+                .join("")}
+            </span>
+          </div>
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <h3 className="text-2xl font-medium tracking-tight">{venue.venue}</h3>
             <AvailabilityBadge value={venue.availability} />
           </div>
           <p className="mt-1 text-sm text-ink-soft">{venue.when}</p>
+          <p className="mt-2 text-sm leading-snug text-ink-soft">{venue.description}</p>
         </div>
       </div>
 
       <div className="border-t border-dashed border-line px-5 py-4 sm:px-6">
         <p className="kicker mb-3 text-ink-soft">{venue.gridCaption}</p>
-        <ul className="grid grid-cols-4 gap-1.5 sm:grid-cols-6 lg:grid-cols-8">
-          {venue.times.map((slot) => (
-            <li key={slot.time}>
-              <span
-                className={cn(
-                  "flex min-h-11 flex-col items-center justify-center rounded-lg border px-1 py-1 text-center",
-                  chipClass[slot.availability],
-                  slot.suggested && "ring-2 ring-olive ring-offset-1 ring-offset-paper-2",
-                )}
-              >
-                <span className="tabular text-[0.78rem] font-semibold leading-none">{slot.time}</span>
-                {slot.note && <span className="mt-0.5 text-[0.58rem] leading-none opacity-80">{slot.note}</span>}
-                {slot.suggested && <span className="sr-only">Suggested</span>}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 text-sm leading-relaxed text-ink-soft">
+        {venue.times.length > 0 && (
+          <ul className="grid grid-cols-4 gap-1.5 sm:grid-cols-6 lg:grid-cols-8">
+            {venue.times.map((slot) => (
+              <li key={slot.time}>
+                <span
+                  className={cn(
+                    "flex min-h-11 flex-col items-center justify-center rounded-lg border px-1 py-1 text-center",
+                    chipClass[slot.availability],
+                    slot.suggested && "ring-2 ring-olive ring-offset-1 ring-offset-paper-2",
+                  )}
+                >
+                  <span className="tabular text-[0.78rem] font-semibold leading-none">{slot.time}</span>
+                  {slot.note && <span className="mt-0.5 text-[0.58rem] leading-none opacity-80">{slot.note}</span>}
+                  {slot.suggested && <span className="sr-only">Suggested</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <p className={cn("text-sm leading-relaxed text-ink-soft", venue.times.length > 0 && "mt-4")}>
           <RichText>{venue.timeNote}</RichText>
         </p>
       </div>

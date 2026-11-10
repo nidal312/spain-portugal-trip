@@ -1,12 +1,14 @@
 import type { Rich } from "@/lib/rich";
 import type { PhotoId } from "./photos";
+import { places } from "./places";
 
-export type Availability = "last-few" | "limited" | "good";
+export type Availability = "last-few" | "limited" | "good" | "calendar";
 
 export const availabilityLabel: Record<Availability, string> = {
   "last-few": "Last few",
   limited: "Limited",
   good: "Good",
+  calendar: "Calendar",
 };
 
 export interface SlotTime {
@@ -25,11 +27,12 @@ export interface SlotField {
 export interface VenueSlots {
   id: string;
   venue: string;
+  description: string;
   /** e.g. "Monday 23 November · basilica, €26" */
   when: string;
   dayId: string;
   availability: Availability;
-  photo: PhotoId;
+  photo?: PhotoId;
   /** What the time grid represents, in the source’s words. */
   gridCaption: string;
   times: SlotTime[];
@@ -57,13 +60,14 @@ const pedreraPrice: Record<string, string> = { "10:15": "€30", "16:00": "€30
 export const slotsIntro = {
   kicker: "Open slots",
   title: "What is still bookable",
-  asOf: "Checked on the official shops, Tuesday 10 November 2026 at about 21:45 Europe/Amsterdam (CET), for 1 adult. Availability changes fast. Suggested times are marked for the day plan.",
+  asOf: "Checked on the official shops, Tuesday 10 November 2026 at about 21:45 Europe/Amsterdam (CET), for 1 adult. Availability changes fast. Suggested times are marked for the day plan. Camp Nou is booked on the club calendar, not a live slot grid.",
 };
 
 export const venueSlots: VenueSlots[] = [
   {
     id: "slot-sagrada",
-    venue: "Sagrada Família",
+    venue: places.sagrada.name,
+    description: places.sagrada.description,
     when: "Monday 23 November · basilica, €26",
     dayId: "day-23",
     availability: "last-few",
@@ -92,7 +96,8 @@ export const venueSlots: VenueSlots[] = [
   },
   {
     id: "slot-park-guell",
-    venue: "Park Güell",
+    venue: places.parkGuell.name,
+    description: places.parkGuell.description,
     when: "Monday 23 November · general, €18",
     dayId: "day-23",
     availability: "last-few",
@@ -115,8 +120,35 @@ export const venueSlots: VenueSlots[] = [
     bookHref: "https://parkguell.barcelona/en/buy-tickets",
   },
   {
+    id: "slot-camp-nou",
+    venue: places.campNou.name,
+    description: places.campNou.description,
+    when: "Tuesday 24 November · 10:00, from €69",
+    dayId: "day-24",
+    availability: "calendar",
+    gridCaption: "Book on the official calendar",
+    times: [],
+    timeNote:
+      "Aim for **10:00**. Be at Access 15 fifteen minutes early. No pitch or dressing rooms. This is not a live inventory check — pick the time on the club calendar.",
+    fields: [
+      {
+        label: "Ticket type",
+        value:
+          "Spotify Camp Nou Experience, from €69. Guided first-tier stands, flexible museum ticket and audio guide.",
+      },
+      {
+        label: "Official stores",
+        value:
+          "Passeig de Gràcia 15 (Mon–Sat 10:00–21:00, Sun 10:00–20:30); Sagrada Família at Mallorca 406 (Mon–Sat 10:00–21:00, closed Sunday); main store at Camp Nou (daily 10:00–19:00). [Store finder](https://store.fcbarcelona.com/en-us/pages/store-finder).",
+      },
+    ],
+    bookLabel: "fcbarcelona.com",
+    bookHref: "https://www.fcbarcelona.com/en/tickets/camp-nou-experience/4418722/spotify-camp-nou-experience",
+  },
+  {
     id: "slot-casa-batllo",
-    venue: "Casa Batlló",
+    venue: places.casaBatllo.name,
+    description: places.casaBatllo.description,
     when: "Tuesday 24 November · general visit",
     dayId: "day-24",
     availability: "good",
@@ -129,7 +161,7 @@ export const venueSlots: VenueSlots[] = [
       note: time === "09:00" ? "€37" : undefined,
     })),
     timeNote:
-      "09:00–18:15 every 15 minutes, wide availability. ==Suggest 16:30 or 17:00== after returning from Montserrat. Skip night visits — they include cava or cocktails.",
+      "09:00–18:15 every 15 minutes, wide availability. ==Suggest 16:30 or 17:00== after lunch. Skip night visits — they include cava or cocktails.",
     fields: [
       {
         label: "Ticket type",
@@ -141,7 +173,8 @@ export const venueSlots: VenueSlots[] = [
   },
   {
     id: "slot-la-pedrera",
-    venue: "La Pedrera (Casa Milà)",
+    venue: places.laPedrera.name,
+    description: places.laPedrera.description,
     when: "Tuesday 24 November · Essential",
     dayId: "day-24",
     availability: "good",
@@ -154,7 +187,7 @@ export const venueSlots: VenueSlots[] = [
       note: pedreraPrice[time],
     })),
     timeNote:
-      "09:00–17:00 every 15 minutes. ==Suggest 16:00 or 16:30== if this is the house you pick (last listed slot 17:00). Skip the Night Experience — it includes cava.",
+      "09:00–17:00 every 15 minutes. ==Suggest 16:00 or 16:30== if this is the house you pick after lunch (last listed slot 17:00). Skip the Night Experience — it includes cava.",
     fields: [
       {
         label: "Ticket type",
@@ -167,7 +200,8 @@ export const venueSlots: VenueSlots[] = [
   },
   {
     id: "slot-pena",
-    venue: "Pena Palace, Sintra",
+    venue: places.pena.name,
+    description: places.pena.description,
     when: "Saturday 28 November · Essential Visit, €20",
     dayId: "day-28",
     availability: "good",

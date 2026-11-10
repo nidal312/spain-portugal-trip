@@ -1,9 +1,10 @@
 import type { Rich } from "@/lib/rich";
 import type { CityId } from "./cities";
+import { places } from "./places";
 
 export interface Eatery {
-  /** Omitted for area-level tips that do not name a single restaurant. */
-  name?: string;
+  name: string;
+  description: string;
   text: Rich;
 }
 
@@ -25,20 +26,39 @@ export const food: CityFood[] = [
     city: "barcelona",
     places: [
       {
-        name: "Café Arabia",
-        text: "Gothic Quarter, near La Rambla. Middle Eastern; site states halal. [cafearabiabarcelona.com](https://www.cafearabiabarcelona.com/en/halal-restaurant-barcelona/)",
-      },
-      { name: "Kapadokya", text: "Gothic Quarter, and a Barceloneta branch. Turkish; site states halal meat." },
-      {
-        name: "Rasa Malaysia",
-        text: "Gràcia, Passeig de Sant Joan, between Park Güell and Sagrada. Site names supplier Alimentbarna S.L.",
+        name: places.cafeArabia.name,
+        description: places.cafeArabia.description,
+        text: "Gothic Quarter, near La Rambla. [cafearabiabarcelona.com](https://www.cafearabiabarcelona.com/en/halal-restaurant-barcelona/)",
       },
       {
-        name: "Restaurante Árabe Halal Marrakech",
+        name: places.kapadokya.name,
+        description: places.kapadokya.description,
+        text: "Gothic Quarter, and a Barceloneta branch.",
+      },
+      {
+        name: places.rasaMalaysia.name,
+        description: places.rasaMalaysia.description,
+        text: "Gràcia, Passeig de Sant Joan, between Park Güell and Sagrada.",
+      },
+      {
+        name: places.marrakech.name,
+        description: places.marrakech.description,
         text: "Sants, near Plaça Espanya (useful before or after Montserrat).",
       },
       {
-        text: "El Raval (Himalaya, Adil Tandoori, Bismillah) is the densest kebab and Pakistani cluster, near the Tariq mosque — ask on the spot.",
+        name: places.himalaya.name,
+        description: places.himalaya.description,
+        text: "El Raval, in the kebab and Pakistani cluster near the Tariq mosque — ask on the spot.",
+      },
+      {
+        name: places.adilTandoori.name,
+        description: places.adilTandoori.description,
+        text: "El Raval, in the same cluster as Himalaya and Bismillah — ask on the spot.",
+      },
+      {
+        name: places.bismillah.name,
+        description: places.bismillah.description,
+        text: "El Raval, in the same cluster as Himalaya and Adil Tandoori — ask on the spot.",
       },
     ],
     note: {
@@ -50,11 +70,20 @@ export const food: CityFood[] = [
     city: "valencia",
     places: [
       {
-        name: "Beirut King",
+        name: places.beirutKing.name,
+        description: places.beirutKing.description,
         text: "Ruzafa, Mossèn Femenia 12. [Listing](https://www.letsgohalal.com/place/beirut-king-ruzafa/)",
       },
-      { name: "Kunafa by Afandi", text: "Ciutat Vella, C/ de Sant Martí 3." },
-      { name: "French Corner", text: "(shawarma) — Ciutat Vella, C/ del Hospital 18." },
+      {
+        name: places.kunafa.name,
+        description: places.kunafa.description,
+        text: "Ciutat Vella, C/ de Sant Martí 3.",
+      },
+      {
+        name: places.frenchCorner.name,
+        description: places.frenchCorner.description,
+        text: "Ciutat Vella, C/ del Hospital 18.",
+      },
     ],
     note: {
       tone: "unverified",
@@ -64,16 +93,41 @@ export const food: CityFood[] = [
   {
     city: "lisbon",
     places: [
-      { name: "Taste of Pakistan", text: "Mouraria, Rua São Pedro Mártir 37B." },
-      { name: "Ghoroa", text: "Mouraria, Travessa Benformoso 2." },
-      { name: "Zaafran", text: "Listed as halal-certified Indian, Rua de São José 35." },
-      { name: "Cantinho do Aziz", text: "Mouraria, Rua de São Lourenço 5 (Mozambican, claimed)." },
-      { name: "Mezze", text: "Arroios, Mercado de Arroios." },
       {
-        name: "Zubir Churrasqueira",
-        text: "Roma-Areeiro, Rua do Zaire 40B (also on the Instituto Halal de Portugal hospitality page).",
+        name: places.tasteOfPakistan.name,
+        description: places.tasteOfPakistan.description,
+        text: "Mouraria, Rua São Pedro Mártir 37B.",
       },
-      { name: "Ali Baba Kebab Haus", text: "Rua da Palma 25." },
+      {
+        name: places.ghoroa.name,
+        description: places.ghoroa.description,
+        text: "Mouraria, Travessa Benformoso 2.",
+      },
+      {
+        name: places.zaafran.name,
+        description: places.zaafran.description,
+        text: "Rua de São José 35.",
+      },
+      {
+        name: places.cantinhoDoAziz.name,
+        description: places.cantinhoDoAziz.description,
+        text: "Mouraria, Rua de São Lourenço 5.",
+      },
+      {
+        name: places.mezze.name,
+        description: places.mezze.description,
+        text: "Arroios, Mercado de Arroios.",
+      },
+      {
+        name: places.zubir.name,
+        description: places.zubir.description,
+        text: "Roma-Areeiro, Rua do Zaire 40B.",
+      },
+      {
+        name: places.aliBaba.name,
+        description: places.aliBaba.description,
+        text: "Rua da Palma 25.",
+      },
     ],
     note: {
       tone: "info",
@@ -84,6 +138,7 @@ export const food: CityFood[] = [
 
 export interface Mosque {
   name: string;
+  description: string;
   text: Rich;
 }
 
@@ -94,12 +149,14 @@ export const mosques: { city: CityId; places: Mosque[] }[] = [
     city: "barcelona",
     places: [
       {
-        name: "Mezquita Tariq Bin Ziyad",
-        text: "Carrer de Sant Rafael 10, El Raval — handy for Ciutat Vella. [City listing](https://guia.barcelona.cat/es/detall/mesquita-tarek-ibn-ziad_92086026003.html).",
+        name: places.mezquitaTariq.name,
+        description: places.mezquitaTariq.description,
+        text: "Carrer de Sant Rafael 10, El Raval. [City listing](https://guia.barcelona.cat/es/detall/mesquita-tarek-ibn-ziad_92086026003.html).",
       },
       {
-        name: "Centre Cultural Islàmic Català",
-        text: "Carrer de Rafael Capdevila 1–3, El Clot — handy from the eastern Eixample. [ccicbcn.com](https://www.ccicbcn.com/contacto/).",
+        name: places.ccic.name,
+        description: places.ccic.description,
+        text: "Carrer de Rafael Capdevila 1–3, El Clot. [ccicbcn.com](https://www.ccicbcn.com/contacto/).",
       },
     ],
   },
@@ -107,8 +164,9 @@ export const mosques: { city: CityId; places: Mosque[] }[] = [
     city: "valencia",
     places: [
       {
-        name: "Gran Mezquita de Valencia",
-        text: "Calle del Palància 5, 46021 (Algirós / near Benimaclet). Opening hours in secondary listings were not confirmed on an official mosque page.",
+        name: places.granMezquitaValencia.name,
+        description: places.granMezquitaValencia.description,
+        text: "Calle del Palància 5, 46021 (Algirós / near Benimaclet).",
       },
     ],
   },
@@ -116,8 +174,9 @@ export const mosques: { city: CityId; places: Mosque[] }[] = [
     city: "lisbon",
     places: [
       {
-        name: "Mesquita Central de Lisboa",
-        text: "Rua da Mesquita 2, Praça de Espanha (Blue Line). The largest in Portugal — jumu’ah on Friday 27 November. [comunidadeislamica.pt](https://www.comunidadeislamica.pt/en) · [prayer times](https://www.comunidadeislamica.pt/horario.html).",
+        name: places.lisbonCentralMosque.name,
+        description: places.lisbonCentralMosque.description,
+        text: "Rua da Mesquita 2, Praça de Espanha (Blue Line). [comunidadeislamica.pt](https://www.comunidadeislamica.pt/en) · [prayer times](https://www.comunidadeislamica.pt/horario.html).",
       },
     ],
   },

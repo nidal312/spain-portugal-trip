@@ -168,7 +168,7 @@ export function RouteMap({ selected, onSelect }: RouteMapProps) {
             style={{ left: pct(city.map.x, VB.w), top: pct(city.map.y, VB.h) }}
           >
             <span className="sr-only">
-              {city.name}, {city.dates}, {city.nights} {city.nights === 1 ? "night" : "nights"}
+              {city.name}. {city.description} {city.dates}, {city.nights} {city.nights === 1 ? "night" : "nights"}
             </span>
             <span
               aria-hidden="true"

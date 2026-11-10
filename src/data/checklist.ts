@@ -33,9 +33,14 @@ export const checklist = {
       body: "€26 basilica. No morning slots left; only four afternoon times remain. [Official tickets](https://tickets.sagradafamilia.org/en/1-individual/4375-sagrada-familia)",
     },
     {
+      id: "camp-nou",
+      title: "Camp Nou Experience, Tue 24 at 10:00",
+      body: "From €69. Book on the official calendar. Be at Access 15 fifteen minutes early. [fcbarcelona.com](https://www.fcbarcelona.com/en/tickets/camp-nou-experience/4418722/spotify-camp-nou-experience)",
+    },
+    {
       id: "gaudi-house",
-      title: "One Gaudí house, Tue 24 late afternoon",
-      body: "Casa Batlló from €31 or La Pedrera Essential €29 (try code CASAMILA10). Pick one after Montserrat.",
+      title: "One Gaudí house, Tue 24 after lunch",
+      body: "Casa Batlló from €31 or La Pedrera Essential €29 (try code CASAMILA10). Pick one after lunch — not both.",
     },
     {
       id: "pena",

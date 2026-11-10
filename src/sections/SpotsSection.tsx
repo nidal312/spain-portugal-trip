@@ -41,12 +41,15 @@ function SpotCard({ spot }: { spot: Spot }) {
         </figure>
       ) : (
         <div className="flex aspect-[3/2] items-end bg-sand px-5 py-6">
-          <p className="font-display text-5xl leading-none text-terra/40 italic">Sant Pau</p>
+          <p className="font-display text-4xl leading-none text-terra/40 italic sm:text-5xl">{spot.name}</p>
         </div>
       )}
       <Collapsible.Root open={open} onOpenChange={setOpen} className="flex flex-1 flex-col">
         <div className="flex items-start justify-between gap-3 px-5 pt-4">
-          <h3 className="text-2xl font-medium tracking-tight">{spot.name}</h3>
+          <div className="min-w-0">
+            <h3 className="text-2xl font-medium tracking-tight">{spot.name}</h3>
+            <p className="mt-2 text-sm leading-snug text-ink-soft">{spot.description}</p>
+          </div>
           <span className="tabular shrink-0 rounded-full bg-ink px-2.5 py-1 text-xs font-semibold tracking-wide text-paper">
             {spot.price}
           </span>

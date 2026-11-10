@@ -22,6 +22,10 @@ export const route = {
       title: "The transfer trick",
       body: "There is no useful midday Valencia–Lisbon flight on Thursday 26 November. The 20:05 Ryanair (€23 pp) is the one to take: a full day in Valencia, land in Lisbon at 20:45 local, go straight to the hotel. The 05:55 TAP wastes the night; the 18:15 TAP is €194.",
     },
+    {
+      title: "Why not Andalusia this time?",
+      body: "Andalusia is worth a separate 3–4 night trip, with the Alhambra in Granada (€22.27, [tickets.alhambra-patronato.es](https://tickets.alhambra-patronato.es/)) and the Real Alcázar in Seville (€15.50). This week it doesn’t fit: Granada has no good link to Lisbon, and Seville in place of Valencia means a ~6h train or an extra flight plus a 21:45 flight to Lisbon, for less than a day there. So Valencia stays.",
+    },
   ] satisfies Reason[],
   map: {
     title: "Barcelona → Valencia → Lisbon",

@@ -28,7 +28,9 @@ export const navItems: NavItem[] = [
   { id: "slots", label: "Tickets" },
   { id: "days", label: "Days" },
   { id: "tickets", label: "Top spots" },
-  { id: "food", label: "Food & prayer" },
+  { id: "food", label: "Food" },
+  { id: "cafes", label: "Cafés" },
+  { id: "pray", label: "Prayer" },
   { id: "stay", label: "Stay" },
   { id: "weather", label: "Weather" },
 ];

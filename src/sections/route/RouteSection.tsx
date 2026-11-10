@@ -30,7 +30,8 @@ function CityPanel() {
           {city.country} · {city.dates}
         </p>
         <h3 className="mt-2 text-4xl font-medium tracking-tight">{city.name}</h3>
-        <p className="mt-1 font-display text-lg text-terra italic">
+        <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-soft">{city.description}</p>
+        <p className="mt-2 font-display text-lg text-terra italic">
           {city.nights} {city.nights === 1 ? "night" : "nights"}
         </p>
 
@@ -107,7 +108,7 @@ export function RouteSection() {
           </div>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-8">
+        <div className="mt-16 grid gap-10 sm:grid-cols-2 md:gap-8">
           {route.reasons.map((reason, i) => (
             <Reveal key={reason.title} delay={i * 0.08} className="border-t-2 border-ink pt-5">
               <h3 className="text-2xl font-medium">{reason.title}</h3>
