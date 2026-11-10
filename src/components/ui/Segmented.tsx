@@ -47,6 +47,7 @@ export function Segmented<T extends string>({
           <ToggleGroup.Item
             key={opt.value}
             value={opt.value}
+            aria-label={opt.count === undefined ? opt.label : `${opt.label}, ${opt.count}`}
             className={cn(
               "relative shrink-0 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
               active

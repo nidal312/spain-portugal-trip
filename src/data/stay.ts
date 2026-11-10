@@ -37,7 +37,7 @@ export const stays: Stay[] = [
     title: "Valencia, 1 night",
     base: places.ciutatVellaValencia.name,
     description: places.ciutatVellaValencia.description,
-    body: "One night here keeps Wednesday afternoon and Thursday on foot.",
+    body: "Ruzafa if you prefer the food streets and will walk or metro 15–20 minutes.",
     areas: [{ name: places.ruzafa.name, description: places.ruzafa.description }],
   },
   {

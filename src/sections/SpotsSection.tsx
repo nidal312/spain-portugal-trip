@@ -40,7 +40,7 @@ function SpotCard({ spot }: { spot: Spot }) {
           </figcaption>
         </figure>
       ) : (
-        <div className="flex aspect-[3/2] items-end bg-sand px-5 py-6">
+        <div className="flex aspect-[3/2] items-end overflow-hidden bg-sand px-5 py-6">
           <p className="font-display text-4xl leading-none text-terra/40 italic sm:text-5xl">{spot.name}</p>
         </div>
       )}
