@@ -6,10 +6,10 @@ import { PhotoCredit } from "@/components/ui/PhotoCredit";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ZoomablePhoto } from "@/components/ui/ZoomablePhoto";
-import { spots, spotsIntro, type Spot } from "@/data/spots";
+import { type Spot } from "@/data/spots";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
-import { scrollToId } from "@/state/contexts";
+import { scrollToId, usePlan } from "@/state/contexts";
 
 function OpenSlotsButton({ slotId }: { slotId: string }) {
   return (
@@ -89,6 +89,7 @@ function SpotCard({ spot }: { spot: Spot }) {
 }
 
 export function SpotsSection() {
+  const { spots, spotsIntro } = usePlan();
   return (
     <section id="tickets" aria-labelledby="tickets-title" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

@@ -2,7 +2,7 @@ import type { Rich } from "@/lib/rich";
 import { places } from "./places";
 
 export type LegId = "outbound" | "transfer" | "return";
-export type Airport = "AMS" | "BCN" | "VLC" | "LIS" | "EIN";
+export type Airport = "AMS" | "BCN" | "VLC" | "LIS" | "EIN" | "RTM";
 
 export interface AirportInfo {
   code: Airport;
@@ -15,15 +15,18 @@ export interface Flight {
   leg: LegId;
   date: string;
   airline: string;
+  /** Carrier flight number, when the source names it. */
+  number?: string;
   from: Airport;
   to: Airport;
   /** Only set where the source states the flight is nonstop. */
   nonstop?: true;
   depart: string;
   arrive: string;
-  fare: number;
+  /** Omitted when the source says the price was not verified. */
+  fare?: number;
   notes?: string;
-  tag?: "Recommended" | "Cheaper home" | "If you need Schiphol";
+  tag?: "Recommended" | "Cheaper home" | "If you need Schiphol" | "Gentler start";
 }
 
 export interface Leg {
@@ -222,6 +225,7 @@ export const airports: Record<Airport, AirportInfo> = {
   VLC: { code: "VLC", name: places.vlc.name, description: places.vlc.description },
   LIS: { code: "LIS", name: places.lis.name, description: places.lis.description },
   EIN: { code: "EIN", name: places.ein.name, description: places.ein.description },
+  RTM: { code: "RTM", name: places.rtm.name, description: places.rtm.description },
 };
 
 export const airportNames: Record<Airport, string> = {
@@ -230,6 +234,7 @@ export const airportNames: Record<Airport, string> = {
   VLC: "Valencia",
   LIS: "Lisbon",
   EIN: "Eindhoven",
+  RTM: "Rotterdam",
 };
 
 export const airportOrder: Airport[] = ["AMS", "BCN", "VLC", "LIS", "EIN"];

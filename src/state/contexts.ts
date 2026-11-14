@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import type { CityId } from "@/data/cities";
+import type { Plan, PlanId } from "@/data/plan";
 import type { PhotoId } from "@/data/photos";
 
 export interface LightboxApi {
@@ -15,6 +16,9 @@ export function useLightbox() {
 }
 
 export interface TripApi {
+  planId: PlanId;
+  setPlanId: (id: PlanId) => void;
+  plan: Plan;
   dayIndex: number;
   setDayIndex: (index: number) => void;
   /** Select a day and scroll the day planner into view. */
@@ -29,6 +33,10 @@ export function useTrip() {
   const ctx = useContext(TripContext);
   if (!ctx) throw new Error("useTrip must be used inside <TripProvider>");
   return ctx;
+}
+
+export function usePlan(): Plan {
+  return useTrip().plan;
 }
 
 export function scrollToId(id: string) {

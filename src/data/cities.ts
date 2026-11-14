@@ -44,8 +44,8 @@ export const cities: City[] = [
   },
 ];
 
-export const cityById = (id: CityId): City => {
-  const city = cities.find((c) => c.id === id);
+export const cityById = (id: CityId, list: City[] = cities): City => {
+  const city = list.find((c) => c.id === id);
   if (!city) throw new Error(`Unknown city ${id}`);
   return city;
 };

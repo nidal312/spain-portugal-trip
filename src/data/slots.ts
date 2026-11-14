@@ -2,13 +2,15 @@ import type { Rich } from "@/lib/rich";
 import type { PhotoId } from "./photos";
 import { places } from "./places";
 
-export type Availability = "last-few" | "limited" | "good" | "calendar";
+export type Availability = "last-few" | "limited" | "good" | "calendar" | "unverified" | "sold-out";
 
 export const availabilityLabel: Record<Availability, string> = {
   "last-few": "Last few",
   limited: "Limited",
   good: "Good",
   calendar: "Calendar",
+  unverified: "Unverified",
+  "sold-out": "Sold out",
 };
 
 export interface SlotTime {

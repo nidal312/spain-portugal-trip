@@ -3,10 +3,10 @@ import { Check, RotateCcw } from "lucide-react";
 import { motion } from "motion/react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { checklist } from "@/data/checklist";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
 import { useLocalStorage } from "@/lib/useLocalStorage";
+import { usePlan, useTrip } from "@/state/contexts";
 
 const EMPTY: Record<string, boolean> = {};
 
@@ -44,7 +44,9 @@ function ProgressRing({ done, total }: { done: number; total: number }) {
 }
 
 export function ChecklistSection() {
-  const [booked, setBooked, reset] = useLocalStorage("checklist", EMPTY);
+  const { planId } = useTrip();
+  const { checklist } = usePlan();
+  const [booked, setBooked, reset] = useLocalStorage(`checklist-${planId}`, EMPTY);
   const done = checklist.items.filter((i) => booked[i.id]).length;
   const total = checklist.items.length;
 

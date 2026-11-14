@@ -5,21 +5,11 @@ import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import {
-  airportNames,
-  airportOrder,
-  airports,
-  defaultSelection,
-  flightSearchLinks,
-  flights,
-  flightsIntro,
-  legs,
-  type Flight,
-  type LegId,
-} from "@/data/flights";
+import { airportNames, type Flight, type LegId } from "@/data/flights";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
 import { useLocalStorage } from "@/lib/useLocalStorage";
+import { usePlan, useTrip } from "@/state/contexts";
 
 type ReturnFilter = "all" | "EIN" | "AMS";
 
@@ -30,6 +20,15 @@ const toMin = (t: string) => {
   return h * 60 + m;
 };
 const pos = (t: string) => ((toMin(t) - DAY_START) / (DAY_END - DAY_START)) * 100;
+
+function formatEuro(n: number): string {
+  const cents = Math.round(n * 100);
+  return cents % 100 === 0 ? `€${cents / 100}` : `€${(cents / 100).toFixed(2)}`;
+}
+
+function fareLabel(fare: number | undefined): string {
+  return fare == null ? "n/a" : formatEuro(fare);
+}
 
 function TimeBar({ flight }: { flight: Flight }) {
   const left = pos(flight.depart);
@@ -50,6 +49,7 @@ function TimeBar({ flight }: { flight: Flight }) {
 }
 
 function FlightOption({ flight, checked, name, onSelect }: { flight: Flight; checked: boolean; name: string; onSelect: () => void }) {
+  const fare = fareLabel(flight.fare);
   return (
     <motion.label
       layout="position"
@@ -69,6 +69,7 @@ function FlightOption({ flight, checked, name, onSelect }: { flight: Flight; che
         <div>
           <p className="text-sm font-semibold">
             {flight.airline}
+            {flight.number && <span className="ml-1.5 font-normal text-ink-soft">{flight.number}</span>}
             {flight.tag && (
               <span className="ml-2 inline-block rounded-full bg-olive px-2 py-0.5 align-[0.1em] text-[0.62rem] font-semibold tracking-[0.08em] text-paper uppercase">
                 {flight.tag}
@@ -87,7 +88,7 @@ function FlightOption({ flight, checked, name, onSelect }: { flight: Flight; che
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <p className="tabular font-display text-2xl font-medium">€{flight.fare}</p>
+          <p className="tabular font-display text-2xl font-medium">{fare}</p>
           <span
             aria-hidden="true"
             className={cn(
@@ -101,33 +102,40 @@ function FlightOption({ flight, checked, name, onSelect }: { flight: Flight; che
       </div>
       <TimeBar flight={flight} />
       {flight.notes && <p className="mt-3 border-t border-dashed border-line pt-3 text-sm leading-snug text-ink-soft">{flight.notes}</p>}
-      <span className="sr-only">€{flight.fare} per person.</span>
+      <span className="sr-only">{flight.fare == null ? "Price not verified." : `${formatEuro(flight.fare)} per person.`}</span>
     </motion.label>
   );
 }
 
 export function FlightsSection() {
-  const [selection, setSelection] = useLocalStorage<Record<LegId, string>>("flights", defaultSelection);
+  const { planId } = useTrip();
+  const plan = usePlan();
+  const { flights, legs, defaultSelection, flightsIntro, flightSearchLinks, airports, rejectedNote } = plan;
+  const [selection, setSelection] = useLocalStorage<Record<LegId, string>>(`flights-${planId}`, defaultSelection);
   const [returnFilter, setReturnFilter] = useState<ReturnFilter>("all");
 
   const byLeg = useMemo(() => {
     const out: Record<LegId, Flight[]> = { outbound: [], transfer: [], return: [] };
     for (const f of flights) out[f.leg].push(f);
     return out;
-  }, []);
+  }, [flights]);
 
   const visible = (leg: LegId) =>
     leg === "return" && returnFilter !== "all" ? byLeg.return.filter((f) => f.to === returnFilter) : byLeg[leg];
 
   const chosen = legs.map((l) => flights.find((f) => f.id === selection[l.id]) ?? byLeg[l.id][0]);
-  const total = chosen.reduce((sum, f) => sum + (f?.fare ?? 0), 0);
+  const priced = chosen.filter((f): f is Flight => f != null && f.fare != null);
+  const total = priced.reduce((sum, f) => sum + (f.fare ?? 0), 0);
+  const totalIncomplete = chosen.some((f) => f != null && f.fare == null);
 
   const changeReturnFilter = (next: ReturnFilter) => {
     setReturnFilter(next);
     if (next === "all") return;
     const current = flights.find((f) => f.id === selection.return);
     if (current?.to !== next) {
-      const pick = byLeg.return.filter((f) => f.to === next).sort((a, b) => a.fare - b.fare)[0];
+      const pick = byLeg.return
+        .filter((f) => f.to === next)
+        .sort((a, b) => (a.fare ?? Number.POSITIVE_INFINITY) - (b.fare ?? Number.POSITIVE_INFINITY))[0];
       if (pick) setSelection({ ...selection, return: pick.id });
     }
   };
@@ -139,6 +147,11 @@ export function FlightsSection() {
           <p className="text-base">
             <RichText>{flightsIntro}</RichText>
           </p>
+          {rejectedNote && (
+            <p className="mt-3 text-sm text-ink-soft">
+              <RichText>{rejectedNote}</RichText>
+            </p>
+          )}
         </SectionHeading>
 
         <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-3 lg:gap-6">
@@ -173,7 +186,7 @@ export function FlightsSection() {
                       <FlightOption
                         key={f.id}
                         flight={f}
-                        name={`leg-${leg.id}`}
+                        name={`leg-${planId}-${leg.id}`}
                         checked={selection[leg.id] === f.id}
                         onSelect={() => setSelection({ ...selection, [leg.id]: f.id })}
                       />
@@ -190,11 +203,11 @@ export function FlightsSection() {
             <div className="min-w-0">
               <p className="kicker text-paper/60">Your combination</p>
               <p className="tabular mt-1 truncate text-sm text-paper/85">
-                {chosen.map((f) => (f ? `${f.airline} €${f.fare}` : "")).join("  ·  ")}
+                {chosen.map((f) => (f ? `${f.airline} ${fareLabel(f.fare)}` : "")).join("  ·  ")}
               </p>
             </div>
             <p className="tabular font-display text-3xl" aria-live="polite">
-              €{total}
+              {totalIncomplete ? `${formatEuro(total)}+` : formatEuro(total)}
               <span className="ml-1.5 text-sm text-paper/60 font-sans">pp</span>
             </p>
           </div>
@@ -215,17 +228,14 @@ export function FlightsSection() {
           ))}
         </div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {airportOrder.map((code) => {
-            const airport = airports[code];
-            return (
-              <article key={code} className="rounded-2xl border border-line bg-paper-2 p-4">
-                <p className="kicker text-ink-soft">{airport.code}</p>
-                <h3 className="mt-1 font-display text-lg font-medium">{airport.name}</h3>
-                <p className="mt-2 text-sm leading-snug text-ink-soft">{airport.description}</p>
-              </article>
-            );
-          })}
+        <div className={cn("mt-12 grid gap-4 sm:grid-cols-2", airports.length > 5 ? "lg:grid-cols-3" : "lg:grid-cols-5")}>
+          {airports.map((airport) => (
+            <article key={airport.code} className="rounded-2xl border border-line bg-paper-2 p-4">
+              <p className="kicker text-ink-soft">{airport.code}</p>
+              <h3 className="mt-1 font-display text-lg font-medium">{airport.name}</h3>
+              <p className="mt-2 text-sm leading-snug text-ink-soft">{airport.description}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -7,9 +7,9 @@ import {
   useTransform,
 } from "motion/react";
 import { useEffect, useRef } from "react";
-import { cities, type CityId } from "@/data/cities";
-import { route } from "@/data/route";
+import type { CityId } from "@/data/cities";
 import { cn } from "@/lib/cn";
+import { usePlan } from "@/state/contexts";
 
 const VB = { w: 720, h: 540 };
 const LAND =
@@ -29,6 +29,7 @@ interface RouteMapProps {
 }
 
 export function RouteMap({ selected, onSelect }: RouteMapProps) {
+  const { cities, route } = usePlan();
   const wrapRef = useRef<HTMLDivElement>(null);
   const trainRef = useRef<SVGPathElement>(null);
   const flightRef = useRef<SVGPathElement>(null);

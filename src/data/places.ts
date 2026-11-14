@@ -453,6 +453,11 @@ export const places = {
     description:
       "A large square and transport hub at the foot of Montjuïc. The FGC R5 toward Montserrat leaves from here, and the Marrakech restaurant is nearby in Sants.",
   },
+  rtm: {
+    name: "Rotterdam The Hague Airport (RTM)",
+    description:
+      "Rotterdam’s airport, south of the city. There is no Monday nonstop from here to Barcelona on this trip.",
+  },
   ams: {
     name: "Amsterdam Airport Schiphol (AMS)",
     description:
@@ -476,7 +481,7 @@ export const places = {
   ein: {
     name: "Eindhoven Airport (EIN)",
     description:
-      "A smaller Dutch airport southeast of Eindhoven. It is the cheaper Transavia return; there is no morning nonstop out to Barcelona on the 22nd.",
+      "A smaller Dutch airport southeast of Eindhoven. It is the cheaper Transavia return. There is no morning nonstop out to Barcelona on Sunday 22, and no Monday nonstop on the 23rd.",
   },
   granjaHidden: {
     name: "Granja Hidden",

@@ -3,17 +3,17 @@ import { useMemo, useState } from "react";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import { cafes, cafesIntro } from "@/data/cafes";
-import { cities, cityBorderClass, cityById, cityTextClass, type CityId } from "@/data/cities";
+import { cityBorderClass, cityById, cityTextClass, type CityId } from "@/data/cities";
 import { cn } from "@/lib/cn";
-import { useTrip } from "@/state/contexts";
+import { usePlan, useTrip } from "@/state/contexts";
 
 type CafeFilter = "all" | CityId;
 
 export function CafesSection() {
   const [filter, setFilter] = useState<CafeFilter>("all");
   const { goToDay } = useTrip();
-  const visible = useMemo(() => (filter === "all" ? cafes : cafes.filter((c) => c.city === filter)), [filter]);
+  const { cafes, cafesIntro, cities } = usePlan();
+  const visible = useMemo(() => (filter === "all" ? cafes : cafes.filter((c) => c.city === filter)), [cafes, filter]);
 
   return (
     <section id="cafes" aria-labelledby="cafes-title" className="py-20 sm:py-28">
@@ -41,7 +41,7 @@ export function CafesSection() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence initial={false} mode="popLayout">
             {visible.map((cafe) => {
-              const city = cityById(cafe.city);
+              const city = cityById(cafe.city, cities);
               return (
                 <motion.article
                   key={cafe.id}

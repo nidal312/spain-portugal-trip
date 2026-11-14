@@ -3,18 +3,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { cityById } from "@/data/cities";
-import { days } from "@/data/days";
-import { route } from "@/data/route";
-import { stays } from "@/data/stay";
 import { RichText } from "@/lib/rich";
-import { useTrip } from "@/state/contexts";
+import { usePlan, useTrip } from "@/state/contexts";
 import { RouteMap } from "./RouteMap";
 
 function CityPanel() {
   const { city: cityId, goToDay } = useTrip();
-  const city = cityById(cityId);
-  const cityDays = days.filter((d) => d.cities.includes(cityId));
-  const stay = stays.find((s) => s.city === cityId);
+  const plan = usePlan();
+  const city = cityById(cityId, plan.cities);
+  const cityDays = plan.days.filter((d) => d.cities.includes(cityId));
+  const stay = plan.stays.find((s) => s.city === cityId);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -77,6 +75,7 @@ function CityPanel() {
 
 export function RouteSection() {
   const { city, setCity } = useTrip();
+  const { route } = usePlan();
   return (
     <section id="route" aria-labelledby="route-title" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
