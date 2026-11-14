@@ -3,14 +3,13 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { Fragment, useRef, useState } from "react";
 import { Photo } from "@/components/ui/Photo";
 import { PhotoCredit } from "@/components/ui/PhotoCredit";
-import { cities } from "@/data/cities";
-import { trip } from "@/data/trip";
+import { usePlan } from "@/state/contexts";
 
 const DAY_MS = 86_400_000;
 
-function countdownLabel(now: number): string | null {
-  const dep = Date.parse(trip.departure);
-  const ret = Date.parse(trip.returnDate);
+function countdownLabel(now: number, departure: string, returnDate: string): string | null {
+  const dep = Date.parse(departure);
+  const ret = Date.parse(returnDate);
   if (now < dep) {
     const days = Math.ceil((dep - now) / DAY_MS);
     return days === 1 ? "Departs tomorrow" : `Departs in ${days} days`;
@@ -22,11 +21,13 @@ function countdownLabel(now: number): string | null {
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero() {
+  const plan = usePlan();
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "18%"]);
-  const [countdown] = useState(() => countdownLabel(Date.now()));
+  const [now] = useState(() => Date.now());
+  const countdown = countdownLabel(now, plan.meta.departure, plan.meta.returnDate);
 
   return (
     <>
@@ -56,7 +57,7 @@ export function Hero() {
             transition={{ duration: 0.8, ease }}
             className="kicker mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-saffron"
           >
-            {trip.kicker}
+            {plan.trip.kicker}
             {countdown && (
               <span className="rounded-full bg-saffron px-2.5 py-1 text-[0.65rem] tracking-[0.14em] text-ink">
                 {countdown}
@@ -81,7 +82,7 @@ export function Hero() {
               transition={{ duration: 0.9, delay: 0.2, ease }}
               className="max-w-xl text-[1.08rem] leading-relaxed text-paper/88 lg:col-span-6 lg:text-xl"
             >
-              {trip.lead}
+              {plan.trip.lead}
             </motion.p>
 
             <motion.ol
@@ -91,7 +92,7 @@ export function Hero() {
               aria-label="Route overview"
               className="flex items-stretch gap-1.5 rounded-2xl border border-paper/15 bg-ink/35 p-1.5 backdrop-blur-md lg:col-span-6 lg:justify-self-end"
             >
-              {cities.map((city, i) => (
+              {plan.cities.map((city, i) => (
                 <Fragment key={city.id}>
                   <li className="min-w-0 flex-1 rounded-xl bg-paper/8 px-3 py-2.5 sm:px-4">
                     <p className="font-display text-lg leading-tight sm:text-xl">{city.name}</p>
@@ -99,7 +100,7 @@ export function Hero() {
                       {city.nights} {city.nights === 1 ? "night" : "nights"}
                     </p>
                   </li>
-                  {i < cities.length - 1 && (
+                  {i < plan.cities.length - 1 && (
                     <li aria-hidden="true" className="grid w-4 shrink-0 place-items-center text-saffron sm:w-6">
                       {i === 0 ? <TrainFront className="size-4" /> : <Plane className="size-4" />}
                     </li>

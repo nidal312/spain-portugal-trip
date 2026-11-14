@@ -14,7 +14,28 @@ import { SlotsSection } from "@/sections/SlotsSection";
 import { SpotsSection } from "@/sections/SpotsSection";
 import { StaySection } from "@/sections/StaySection";
 import { WeatherSection } from "@/sections/WeatherSection";
+import { useTrip } from "@/state/contexts";
 import { TripProvider } from "@/state/TripProvider";
+
+function Main() {
+  const { planId } = useTrip();
+  return (
+    <main id="main">
+      <Hero />
+      <RouteSection />
+      <FlightsSection key={`flights-${planId}`} />
+      <ChecklistSection key={`checklist-${planId}`} />
+      <SlotsSection key={`slots-${planId}`} />
+      <DaysSection key={`days-${planId}`} />
+      <SpotsSection />
+      <FoodSection />
+      <CafesSection key={`cafes-${planId}`} />
+      <MosquesSection />
+      <StaySection />
+      <WeatherSection />
+    </main>
+  );
+}
 
 export function App() {
   return (
@@ -28,20 +49,7 @@ export function App() {
             Skip to content
           </a>
           <Header />
-          <main id="main">
-            <Hero />
-            <RouteSection />
-            <FlightsSection />
-            <ChecklistSection />
-            <SlotsSection />
-            <DaysSection />
-            <SpotsSection />
-            <FoodSection />
-            <CafesSection />
-            <MosquesSection />
-            <StaySection />
-            <WeatherSection />
-          </main>
+          <Main />
           <Footer />
         </LightboxProvider>
       </TripProvider>

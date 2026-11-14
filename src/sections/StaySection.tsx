@@ -1,11 +1,12 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cityBorderClass, cityTextClass } from "@/data/cities";
-import { stayIntro, stays } from "@/data/stay";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
+import { usePlan } from "@/state/contexts";
 
 export function StaySection() {
+  const { stayIntro, stays } = usePlan();
   return (
     <section id="stay" aria-labelledby="stay-title" className="bg-sand/60 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

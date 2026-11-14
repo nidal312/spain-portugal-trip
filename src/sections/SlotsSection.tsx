@@ -6,17 +6,11 @@ import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Photo } from "@/components/ui/Photo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import {
-  availabilityLabel,
-  slotsIntro,
-  venueSlots,
-  type Availability,
-  type VenueSlots,
-} from "@/data/slots";
+import { availabilityLabel, type Availability, type VenueSlots } from "@/data/slots";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
 import { useLocalStorage } from "@/lib/useLocalStorage";
-import { useTrip } from "@/state/contexts";
+import { usePlan, useTrip } from "@/state/contexts";
 
 type SlotFilter = "all" | "last-few" | "good";
 
@@ -27,6 +21,8 @@ const badgeClass: Record<Availability, string> = {
   limited: "bg-avail-limited text-paper",
   good: "bg-avail-good text-paper",
   calendar: "bg-ink text-paper",
+  unverified: "bg-ink-soft text-paper",
+  "sold-out": "bg-terra text-paper",
 };
 
 const chipClass: Record<Availability, string> = {
@@ -34,6 +30,8 @@ const chipClass: Record<Availability, string> = {
   limited: "border-avail-limited/30 bg-avail-limited/12 text-avail-limited",
   good: "border-avail-good/30 bg-avail-good/12 text-avail-good",
   calendar: "border-ink/20 bg-sand text-ink",
+  unverified: "border-ink-soft/25 bg-sand text-ink-soft",
+  "sold-out": "border-terra/30 bg-terra/12 text-terra",
 };
 
 function AvailabilityBadge({ value }: { value: Availability }) {
@@ -168,8 +166,10 @@ function SlotCard({ venue, codes, onCode }: { venue: VenueSlots; codes: Record<s
 }
 
 export function SlotsSection() {
+  const { planId } = useTrip();
+  const { slotsIntro, venueSlots } = usePlan();
   const [filter, setFilter] = useState<SlotFilter>("all");
-  const [codes, setCodes] = useLocalStorage("slot-confirmations", EMPTY_CODES);
+  const [codes, setCodes] = useLocalStorage(`slot-confirmations-${planId}`, EMPTY_CODES);
 
   const counts = useMemo(
     () => ({
@@ -177,7 +177,7 @@ export function SlotsSection() {
       "last-few": venueSlots.filter((v) => v.availability === "last-few").length,
       good: venueSlots.filter((v) => v.availability === "good").length,
     }),
-    [],
+    [venueSlots],
   );
 
   const visible = filter === "all" ? venueSlots : venueSlots.filter((v) => v.availability === filter);
@@ -209,6 +209,12 @@ export function SlotsSection() {
             </li>
             <li className="flex items-center gap-1.5">
               <span className="size-2.5 rounded-sm bg-avail-good" aria-hidden="true" /> Good
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="size-2.5 rounded-sm bg-ink-soft" aria-hidden="true" /> Unverified
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="size-2.5 rounded-sm bg-terra" aria-hidden="true" /> Sold out
             </li>
             <li className="flex items-center gap-1.5">
               <span className="size-2.5 rounded-sm ring-2 ring-olive" aria-hidden="true" /> Suggested

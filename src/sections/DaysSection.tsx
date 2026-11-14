@@ -8,10 +8,10 @@ import { PlaceBlurbList } from "@/components/ui/PlaceBlurb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ZoomablePhoto } from "@/components/ui/ZoomablePhoto";
 import { cityBgClass, cityTextClass, type CityId } from "@/data/cities";
-import { days, daysIntro, type Day, type DayBlock } from "@/data/days";
+import { type Day, type DayBlock } from "@/data/days";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
-import { useTrip } from "@/state/contexts";
+import { usePlan, useTrip } from "@/state/contexts";
 
 function CityDot({ cities }: { cities: CityId[] }) {
   const first = cities[0];
@@ -101,13 +101,13 @@ function DayBlocks({ blocks }: { blocks: DayBlock[] }) {
   );
 }
 
-function DaySlide({ day, index, active }: { day: Day; index: number; active: boolean }) {
+function DaySlide({ day, index, active, total }: { day: Day; index: number; active: boolean; total: number }) {
   const accent = day.cities[0] ?? "barcelona";
   return (
     <article
       id={day.id}
       aria-roledescription="slide"
-      aria-label={`${index + 1} of ${days.length}: ${day.title}`}
+      aria-label={`${index + 1} of ${total}: ${day.title}`}
       inert={!active}
       className="grid gap-6 lg:grid-cols-12 lg:gap-10"
     >
@@ -137,6 +137,7 @@ function DaySlide({ day, index, active }: { day: Day; index: number; active: boo
 
 export function DaysSection() {
   const { dayIndex, setDayIndex } = useTrip();
+  const { days, daysIntro, meta } = usePlan();
   const reduce = useReducedMotion();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: false, align: "start", duration: reduce ? 0 : 22, watchDrag: true },
@@ -164,7 +165,7 @@ export function DaysSection() {
       setDayIndex(next);
       tabRefs.current[next]?.focus();
     },
-    [setDayIndex],
+    [days.length, setDayIndex],
   );
 
   const onPickerKey = (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -267,10 +268,10 @@ export function DaysSection() {
           aria-roledescription="carousel"
           aria-label="Day by day plan"
         >
-          <div className="flex items-start">
+          <div key={meta.id} className="flex items-start">
             {days.map((day, i) => (
               <div key={day.id} className="min-w-0 shrink-0 basis-full p-5 sm:p-8">
-                <DaySlide day={day} index={i} active={i === dayIndex} />
+                <DaySlide day={day} index={i} active={i === dayIndex} total={days.length} />
               </div>
             ))}
           </div>

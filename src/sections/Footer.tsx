@@ -1,8 +1,9 @@
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { creditOrder, photos } from "@/data/photos";
-import { about } from "@/data/trip";
+import { usePlan } from "@/state/contexts";
 
 export function Footer() {
+  const { about } = usePlan();
   return (
     <footer className="border-t border-line py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

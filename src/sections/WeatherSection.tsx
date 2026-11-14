@@ -1,9 +1,10 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cityById, cityTextClass } from "@/data/cities";
-import { weather, weatherIntro, weatherSources, type CityWeather } from "@/data/weather";
+import { weatherSources, type CityWeather } from "@/data/weather";
 import { cn } from "@/lib/cn";
 import { RichText } from "@/lib/rich";
+import { usePlan } from "@/state/contexts";
 
 const TEMP_MIN = 5;
 const TEMP_MAX = 20;
@@ -64,6 +65,7 @@ function DaylightBar({ sunrise, sunset }: { sunrise: string; sunset: string }) {
 }
 
 export function WeatherSection() {
+  const { weather, weatherIntro, cities } = usePlan();
   return (
     <section id="weather" aria-labelledby="weather-title" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -72,7 +74,7 @@ export function WeatherSection() {
         </SectionHeading>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {weather.map((cityWx, i) => {
-            const city = cityById(cityWx.city);
+            const city = cityById(cityWx.city, cities);
             return (
               <Reveal key={cityWx.city} delay={i * 0.06}>
                 <article className="h-full rounded-[1.75rem] border border-line bg-paper-2 p-6 shadow-card">
